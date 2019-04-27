@@ -22,29 +22,30 @@ class App extends Component {
   }
 
   decideWinner = ()=> {
-    const {playerBlue, playerRed} = this.state //gets state's Blue and Red state
-    if(playerRed == playerBlue){
+    const {botPlayer, humanPlayer} = this.state //gets state's Blue and Red state
+    if(humanPlayer == botPlayer){
       return "Draw!"
     }
-    //playerRed Wins!
-    if((playerRed=="rock" && playerBlue=="scissors") || 
-    (playerRed=="paper" && playerBlue=="rock") ||
-    (playerRed=="scissors" && playerBlue=="paper")){
-      return "Player Red Won!"
+    //humanPlayer Wins!
+    if((humanPlayer=="rock" && botPlayer=="scissors") || 
+    (humanPlayer=="paper" && botPlayer=="rock") ||
+    (humanPlayer=="scissors" && botPlayer=="paper")){
+      return "You Human Won!"
     }
-    return "Blue Player wins!"
+    return "Computer Rules the world!"
 
   }
 
-  runGame = () => {
+  runGame = (el) => {
+    let humanCard = el.target.value
     //interval timer for drawing outcome every 1/10th second, run it 40 times
     let counter = 0
     let myInterval = setInterval(() => {
       counter++
       //Set states for P1 and P2's hand 
       this.setState({
-        playerRed: this.symbols[Math.floor(Math.random() * 3)], 
-        playerBlue: this.symbols[Math.floor(Math.random() * 3)], 
+        humanPlayer: humanCard, 
+        botPlayer: this.symbols[Math.floor(Math.random() * 3)], 
         winner: ""
       }) 
       //animation stops after 40 times 
@@ -60,12 +61,16 @@ class App extends Component {
       <div className="App">
         <PlayerCard
           color="red"
-          symbol= {this.state.playerRed}/>
+          symbol= {this.state.humanPlayer}/>
         <PlayerCard
           color="blue"
-          symbol= {this.state.playerBlue}/>
+          symbol= {this.state.botPlayer}/>
         <h1>{this.state.winner}</h1>
-        <button onClick={this.runGame}>Run Game</button>
+
+        <button onClick={this.runGame} value="paper">Paper</button>
+        <button onClick={this.runGame} value="scissors">Scissors</button>
+        <button onClick={this.runGame} value="rock">Rock</button>
+
       </div>
     );
   }
